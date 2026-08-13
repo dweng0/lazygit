@@ -58,6 +58,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 |-----|--------|-------------|
 | `` <enter> `` | Enter |  |
 | `` h `` | Go to parent directory |  |
+| `` o `` | Открыть файл |  |
 | `` / `` | Filter the current view by text |  |
 
 ## Input prompt

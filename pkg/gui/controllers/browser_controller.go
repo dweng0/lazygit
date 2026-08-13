@@ -51,16 +51,29 @@ func (self *BrowserController) GetKeybindings(opts types.KeybindingsOpts) []*typ
 			Handler:     self.goUp,
 			Description: self.c.Tr.BrowserGoUp,
 		},
+		{
+			Keys:              opts.GetKeys(opts.Config.Universal.OpenFile),
+			Handler:           self.withItem(self.open),
+			GetDisabledReason: self.require(self.singleItemSelected()),
+			Description:       self.c.Tr.OpenFile,
+			DisplayOnScreen:   true,
+		},
 	}
 }
 
-// enter descends into a directory. Files are handled in a later change.
+// enter descends into a directory, or opens a file in the configured editor.
 func (self *BrowserController) enter(node *models.FileSystemNode) error {
 	if node.IsDir {
 		self.setCwd(node.Path)
+		return nil
 	}
 
-	return nil
+	return self.c.Helpers().Files.EditFiles([]string{node.Path})
+}
+
+// open opens the selected node with the OS default application.
+func (self *BrowserController) open(node *models.FileSystemNode) error {
+	return self.c.Helpers().Files.OpenFile(node.Path)
 }
 
 // goUp moves to the parent of the current directory. At the filesystem root
