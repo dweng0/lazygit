@@ -52,6 +52,14 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | 下一個索引標籤 |  |
 | `` [ `` | 上一個索引標籤 |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` / `` | 搜尋 |  |
+
 ## Input prompt
 
 | Key | Action | Info |

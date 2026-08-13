@@ -52,6 +52,14 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | 下一个标签 |  |
 | `` [ `` | 上一个标签 |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | 进入 |  |
+| `` h `` | Go to parent directory |  |
+| `` / `` | 通过文本过滤当前视图 |  |
+
 ## 子提交
 
 | Key | Action | Info |

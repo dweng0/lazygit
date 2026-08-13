@@ -143,6 +143,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 	)
 
 	submodulesController := controllers.NewSubmodulesController(common)
+	browserController := controllers.NewBrowserController(common)
 
 	bisectController := controllers.NewBisectController(common)
 
@@ -217,6 +218,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 		gui.State.Contexts.RemoteBranches,
 		gui.State.Contexts.Files,
 		gui.State.Contexts.Submodules,
+		gui.State.Contexts.Browser,
 		gui.State.Contexts.ReflogCommits,
 		gui.State.Contexts.LocalCommits,
 		gui.State.Contexts.CommitFiles,
@@ -329,6 +331,10 @@ func (gui *Gui) resetHelpersAndControllers() {
 
 	controllers.AttachControllers(gui.State.Contexts.Submodules,
 		submodulesController,
+	)
+
+	controllers.AttachControllers(gui.State.Contexts.Browser,
+		browserController,
 	)
 
 	controllers.AttachControllers(gui.State.Contexts.Branches,

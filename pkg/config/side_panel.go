@@ -19,6 +19,7 @@ var ValidSidePanelTabs = []string{
 	"files",
 	"worktrees",
 	"submodules",
+	"browser",
 	"branches",
 	"remotes",
 	"tags",

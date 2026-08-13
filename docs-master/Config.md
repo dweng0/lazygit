@@ -125,7 +125,7 @@ gui:
   # 'commits' must always be included; they can't be hidden.
   sidePanels:
     - [status]
-    - [files, worktrees, submodules]
+    - [files, worktrees, submodules, browser]
     - [branches, remotes, tags]
     - [commits, reflog]
     - [stash]
@@ -824,6 +824,9 @@ keybinding:
     init: i
     update: u
     bulkMenu: b
+  browser:
+    goUp: h
+    goInto: l
   commitMessage:
     commitMenu: <ctrl+o>
 ```

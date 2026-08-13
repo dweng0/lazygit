@@ -62,6 +62,10 @@ func (self *Views) Submodules() *ViewDriver {
 	return self.regularView("submodules")
 }
 
+func (self *Views) Browser() *ViewDriver {
+	return self.regularView("browser")
+}
+
 func (self *Views) Information() *ViewDriver {
 	return self.regularView("information")
 }

@@ -652,7 +652,8 @@
             [
               "files",
               "worktrees",
-              "submodules"
+              "submodules",
+              "browser"
             ],
             [
               "branches",
@@ -1263,6 +1264,40 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "KeybindingBrowserConfig": {
+      "properties": {
+        "goUp": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "default": "h"
+        },
+        "goInto": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "default": "l"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "KeybindingCommitFilesConfig": {
       "properties": {
         "checkoutCommitFile": {
@@ -1724,6 +1759,9 @@
         },
         "submodules": {
           "$ref": "#/$defs/KeybindingSubmodulesConfig"
+        },
+        "browser": {
+          "$ref": "#/$defs/KeybindingBrowserConfig"
         },
         "commitMessage": {
           "$ref": "#/$defs/KeybindingCommitMessageConfig"
@@ -3621,6 +3659,7 @@
           "files",
           "worktrees",
           "submodules",
+          "browser",
           "branches",
           "remotes",
           "tags",

@@ -52,6 +52,14 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | 次のタブ |  |
 | `` [ `` | 前のタブ |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | 入る |  |
+| `` h `` | Go to parent directory |  |
+| `` / `` | 現在のビューをテキストでフィルタリング |  |
+
 ## Input prompt
 
 | Key | Action | Info |

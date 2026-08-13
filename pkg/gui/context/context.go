@@ -46,6 +46,7 @@ const (
 	COMMIT_MESSAGE_CONTEXT_KEY     types.ContextKey = "commitMessage"
 	COMMIT_DESCRIPTION_CONTEXT_KEY types.ContextKey = "commitDescription"
 	SUBMODULES_CONTEXT_KEY         types.ContextKey = "submodules"
+	BROWSER_CONTEXT_KEY            types.ContextKey = "browser"
 	SUGGESTIONS_CONTEXT_KEY        types.ContextKey = "suggestions"
 	COMMAND_LOG_CONTEXT_KEY        types.ContextKey = "cmdLog"
 )
@@ -78,6 +79,7 @@ var AllContextKeys = []types.ContextKey{
 	SEARCH_CONTEXT_KEY,
 	COMMIT_MESSAGE_CONTEXT_KEY,
 	SUBMODULES_CONTEXT_KEY,
+	BROWSER_CONTEXT_KEY,
 	SUGGESTIONS_CONTEXT_KEY,
 	COMMAND_LOG_CONTEXT_KEY,
 }
@@ -95,6 +97,7 @@ type ContextTree struct {
 	Remotes                     *RemotesContext
 	Worktrees                   *WorktreesContext
 	Submodules                  *SubmodulesContext
+	Browser                     *BrowserContext
 	RemoteBranches              *RemoteBranchesContext
 	ReflogCommits               *ReflogCommitsContext
 	SubCommits                  *SubCommitsContext
@@ -131,6 +134,7 @@ func (self *ContextTree) Flatten() []types.Context {
 		self.Status,
 		self.Snake,
 		self.Submodules,
+		self.Browser,
 		self.Worktrees,
 		self.Files,
 		self.SubCommits,

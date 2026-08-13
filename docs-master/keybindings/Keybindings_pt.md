@@ -135,6 +135,14 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <enter> `` | Ver commits |  |
 | `` / `` | Filtrar a visualização atual por texto |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` / `` | Filtrar a visualização atual por texto |  |
+
 ## Commit arquivos
 
 | Key | Action | Info |

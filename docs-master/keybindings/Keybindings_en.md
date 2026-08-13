@@ -52,6 +52,14 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | Next tab |  |
 | `` [ `` | Previous tab |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` / `` | Filter the current view by text |  |
+
 ## Commit files
 
 | Key | Action | Info |
