@@ -761,6 +761,7 @@ type TranslationSet struct {
 	SubmodulesTitle                       string
 	BrowserTitle                          string
 	BrowserGoUp                           string
+	BrowserToggleHidden                   string
 	BrowserBinaryFile                     string
 	NavigationTitle                       string
 	SuggestionsCheatsheetTitle            string
@@ -1926,6 +1927,7 @@ func EnglishTranslationSet() *TranslationSet {
 		SubmodulesTitle:                          "Submodules",
 		BrowserTitle:                             "Browser",
 		BrowserGoUp:                              "Go to parent directory",
+		BrowserToggleHidden:                      "Toggle hidden files",
 		BrowserBinaryFile:                        "(binary file)",
 		NavigationTitle:                          "List panel navigation",
 		SuggestionsCheatsheetTitle:               "Suggestions",

@@ -673,8 +673,9 @@ type KeybindingSubmodulesConfig struct {
 }
 
 type KeybindingBrowserConfig struct {
-	GoUp   Keybinding `yaml:"goUp"`
-	GoInto Keybinding `yaml:"goInto"`
+	GoUp         Keybinding `yaml:"goUp"`
+	GoInto       Keybinding `yaml:"goInto"`
+	ToggleHidden Keybinding `yaml:"toggleHidden"`
 }
 
 type KeybindingCommitMessageConfig struct {
@@ -1186,8 +1187,9 @@ func GetDefaultConfigForPlatform(platform string) *UserConfig {
 				BulkMenu: Keybinding{"b"},
 			},
 			Browser: KeybindingBrowserConfig{
-				GoUp:   Keybinding{"h"},
-				GoInto: Keybinding{"l"},
+				GoUp:         Keybinding{"h"},
+				GoInto:       Keybinding{"l"},
+				ToggleHidden: Keybinding{"I"},
 			},
 			CommitMessage: KeybindingCommitMessageConfig{
 				CommitMenu: Keybinding{"<ctrl+o>"},

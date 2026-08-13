@@ -827,6 +827,7 @@ keybinding:
   browser:
     goUp: h
     goInto: l
+    toggleHidden: I
   commitMessage:
     commitMenu: <ctrl+o>
 ```

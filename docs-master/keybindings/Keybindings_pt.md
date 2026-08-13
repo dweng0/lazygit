@@ -142,6 +142,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <enter> `` | Enter |  |
 | `` h `` | Go to parent directory |  |
 | `` o `` | Abrir arquivo |  |
+| `` I `` | Toggle hidden files |  |
 | `` / `` | Filtrar a visualização atual por texto |  |
 
 ## Commit arquivos

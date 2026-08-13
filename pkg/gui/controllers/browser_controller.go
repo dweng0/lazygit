@@ -66,7 +66,21 @@ func (self *BrowserController) GetKeybindings(opts types.KeybindingsOpts) []*typ
 			Description:       self.c.Tr.OpenFile,
 			DisplayOnScreen:   true,
 		},
+		{
+			Keys:            opts.GetKeys(opts.Config.Browser.ToggleHidden),
+			Handler:         self.toggleHidden,
+			Description:     self.c.Tr.BrowserToggleHidden,
+			DisplayOnScreen: true,
+		},
 	}
+}
+
+// toggleHidden shows or hides dotfiles in the listing.
+func (self *BrowserController) toggleHidden() error {
+	self.context().ToggleShowHidden()
+	self.c.PostRefreshUpdate(self.context())
+
+	return nil
 }
 
 // enter descends into a directory, or opens a file in the configured editor.
@@ -161,6 +175,9 @@ func (self *BrowserController) directoryPreview(path string) string {
 
 	names := make([]string, 0, len(entries))
 	for _, entry := range entries {
+		if !self.context().IsShowingHidden() && strings.HasPrefix(entry.Name(), ".") {
+			continue
+		}
 		name := entry.Name()
 		if entry.IsDir() {
 			name += "/"

@@ -59,6 +59,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <enter> `` | 进入 |  |
 | `` h `` | Go to parent directory |  |
 | `` o `` | 打开文件 |  |
+| `` I `` | Toggle hidden files |  |
 | `` / `` | 通过文本过滤当前视图 |  |
 
 ## 子提交

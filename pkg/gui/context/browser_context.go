@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/jesseduffield/lazygit/pkg/commands/models"
 	"github.com/jesseduffield/lazygit/pkg/gui/presentation"
@@ -17,9 +18,10 @@ type BrowserContext struct {
 	// cwd is the directory currently being browsed. entries is the cached
 	// listing of cwd; it is only re-read when cwd changes or Reload is called,
 	// so that the several getModel() calls per keystroke don't each hit the
-	// filesystem.
-	cwd     string
-	entries []*models.FileSystemNode
+	// filesystem. showHidden controls whether dotfiles are included.
+	cwd        string
+	entries    []*models.FileSystemNode
+	showHidden bool
 }
 
 var _ types.IListContext = (*BrowserContext)(nil)
@@ -71,14 +73,24 @@ func (self *BrowserContext) SetCwd(dir string) {
 // Reload re-reads the current directory from disk into the cached listing,
 // keeping any active filter applied to the fresh entries.
 func (self *BrowserContext) Reload() {
-	self.entries = readDir(self.cwd)
+	self.entries = readDir(self.cwd, self.showHidden)
 	self.ReApplyFilter(self.c.UserConfig().Gui.UseFuzzySearch())
+}
+
+func (self *BrowserContext) IsShowingHidden() bool {
+	return self.showHidden
+}
+
+// ToggleShowHidden flips whether dotfiles are shown and reloads the listing.
+func (self *BrowserContext) ToggleShowHidden() {
+	self.showHidden = !self.showHidden
+	self.Reload()
 }
 
 // readDir lists dir with directories first, each group sorted by name. A
 // directory that can't be read yields an empty listing rather than an error, so
 // browsing into an unreadable directory just shows nothing.
-func readDir(dir string) []*models.FileSystemNode {
+func readDir(dir string, showHidden bool) []*models.FileSystemNode {
 	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil
@@ -86,6 +98,9 @@ func readDir(dir string) []*models.FileSystemNode {
 
 	nodes := make([]*models.FileSystemNode, 0, len(dirEntries))
 	for _, entry := range dirEntries {
+		if !showHidden && strings.HasPrefix(entry.Name(), ".") {
+			continue
+		}
 		nodes = append(nodes, &models.FileSystemNode{
 			Name:  entry.Name(),
 			Path:  filepath.Join(dir, entry.Name()),

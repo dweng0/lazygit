@@ -59,6 +59,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <enter> `` | 入る |  |
 | `` h `` | Go to parent directory |  |
 | `` o `` | ファイルを開く |  |
+| `` I `` | Toggle hidden files |  |
 | `` / `` | 現在のビューをテキストでフィルタリング |  |
 
 ## Input prompt

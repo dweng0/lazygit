@@ -1293,6 +1293,20 @@
             }
           ],
           "default": "l"
+        },
+        "toggleHidden": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "default": "I"
         }
       },
       "additionalProperties": false,

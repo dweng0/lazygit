@@ -92,6 +92,7 @@ var tests = []*components.IntegrationTest{
 	branch.Suggestions,
 	branch.UnsetUpstream,
 	browser.Navigate,
+	browser.ToggleHidden,
 	cherry_pick.CherryPick,
 	cherry_pick.CherryPickCommitThatBecomesEmpty,
 	cherry_pick.CherryPickConflicts,
