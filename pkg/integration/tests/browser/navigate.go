@@ -24,7 +24,16 @@ var Navigate = NewIntegrationTest(NewIntegrationTestArgs{
 				Contains("subdir/"),
 				Contains("toplevel.txt"),
 			).
+			NavigateToLine(Contains("toplevel.txt")).
+			Tap(func() {
+				// selecting a file previews its contents in the main panel
+				t.Views().Main().Content(Contains("top-level content"))
+			}).
 			NavigateToLine(Contains("subdir/")).
+			Tap(func() {
+				// selecting a directory previews its listing in the main panel
+				t.Views().Main().Content(Contains("nested.txt"))
+			}).
 			Press(keys.Browser.GoInto).
 			ContainsLines(
 				Contains("nested.txt"),

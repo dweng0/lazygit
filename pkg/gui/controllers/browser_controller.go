@@ -1,13 +1,21 @@
 package controllers
 
 import (
+	"bytes"
+	"io"
 	"os"
 	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/jesseduffield/lazygit/pkg/commands/models"
 	"github.com/jesseduffield/lazygit/pkg/gui/context"
 	"github.com/jesseduffield/lazygit/pkg/gui/types"
 )
+
+// browserPreviewMaxBytes caps how much of a file we read for the main-panel
+// preview, so selecting a huge file doesn't read it all into memory.
+const browserPreviewMaxBytes = 1024 * 1024
 
 type BrowserController struct {
 	baseController
@@ -88,6 +96,79 @@ func (self *BrowserController) setCwd(dir string) {
 	self.context().SetCwd(dir)
 	self.context().SetSelection(0)
 	self.c.PostRefreshUpdate(self.context())
+}
+
+func (self *BrowserController) GetOnRenderToMain() func() {
+	return func() {
+		node := self.context().GetSelected()
+
+		var content string
+		if node == nil {
+			content = ""
+		} else if node.IsDir {
+			content = self.directoryPreview(node.Path)
+		} else {
+			content = self.filePreview(node.Path)
+		}
+
+		self.c.RenderToMainViews(types.RefreshMainOpts{
+			Pair: self.c.MainViewPairs().Normal,
+			Main: &types.ViewUpdateOpts{
+				Task: types.NewRenderStringWithoutScrollTask(content),
+			},
+		})
+	}
+}
+
+// filePreview returns the file's contents up to browserPreviewMaxBytes, or a
+// placeholder if it looks binary or can't be read.
+func (self *BrowserController) filePreview(path string) string {
+	file, err := os.Open(path)
+	if err != nil {
+		self.c.Log.Error(err)
+		return ""
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(io.LimitReader(file, browserPreviewMaxBytes))
+	if err != nil {
+		self.c.Log.Error(err)
+		return ""
+	}
+
+	if bytes.IndexByte(data, 0) != -1 {
+		return self.c.Tr.BrowserBinaryFile
+	}
+
+	return string(data)
+}
+
+// directoryPreview lists the entries of a directory the way the browser lists
+// the current one: directories first, each with a trailing slash.
+func (self *BrowserController) directoryPreview(path string) string {
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		self.c.Log.Error(err)
+		return ""
+	}
+
+	sort.SliceStable(entries, func(i, j int) bool {
+		if entries[i].IsDir() != entries[j].IsDir() {
+			return entries[i].IsDir()
+		}
+		return entries[i].Name() < entries[j].Name()
+	})
+
+	names := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		name := entry.Name()
+		if entry.IsDir() {
+			name += "/"
+		}
+		names = append(names, name)
+	}
+
+	return strings.Join(names, "\n")
 }
 
 func (self *BrowserController) GetOnFocus() func(types.OnFocusOpts) {

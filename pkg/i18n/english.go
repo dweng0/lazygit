@@ -761,6 +761,7 @@ type TranslationSet struct {
 	SubmodulesTitle                       string
 	BrowserTitle                          string
 	BrowserGoUp                           string
+	BrowserBinaryFile                     string
 	NavigationTitle                       string
 	SuggestionsCheatsheetTitle            string
 	// Unlike the cheatsheet title above, the real suggestions title has a little message saying press tab to focus
@@ -1925,6 +1926,7 @@ func EnglishTranslationSet() *TranslationSet {
 		SubmodulesTitle:                          "Submodules",
 		BrowserTitle:                             "Browser",
 		BrowserGoUp:                              "Go to parent directory",
+		BrowserBinaryFile:                        "(binary file)",
 		NavigationTitle:                          "List panel navigation",
 		SuggestionsCheatsheetTitle:               "Suggestions",
 		SuggestionsTitle:                         "Suggestions (press %s to focus)",
