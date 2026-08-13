@@ -372,6 +372,17 @@ type TranslationSet struct {
 	PullRequestChecksFailing              string
 	PullRequestChecksError                string
 	PullRequestChecksExpected             string
+	PullRequestTitle                      string
+	PullRequestLoading                    string
+	PullRequestLoadError                  string
+	PullRequestChecksHeader               string
+	PullRequestCommentsHeader             string
+	PullRequestReviewsHeader              string
+	PullRequestNoDescription              string
+	PullRequestReviewApproved             string
+	PullRequestReviewChangesRequested     string
+	PullRequestReviewCommented            string
+	PullRequestReviewDismissed            string
 	ErrorOccurred                         string
 	ConflictLabel                         string
 	PendingRebaseTodosSectionHeader       string
@@ -1539,6 +1550,17 @@ func EnglishTranslationSet() *TranslationSet {
 		PullRequestChecksFailing:             "Failing",
 		PullRequestChecksError:               "Error",
 		PullRequestChecksExpected:            "Expected",
+		PullRequestTitle:                     "Pull request",
+		PullRequestLoading:                   "Loading pull request...",
+		PullRequestLoadError:                 "Failed to load pull request",
+		PullRequestChecksHeader:              "Checks",
+		PullRequestCommentsHeader:            "Comments",
+		PullRequestReviewsHeader:             "Reviews",
+		PullRequestNoDescription:             "No description provided",
+		PullRequestReviewApproved:            "approved",
+		PullRequestReviewChangesRequested:    "requested changes",
+		PullRequestReviewCommented:           "commented",
+		PullRequestReviewDismissed:           "dismissed",
 		ErrorOccurred:                        "An error occurred! Please create an issue at",
 		ConflictLabel:                        "CONFLICT",
 		PendingRebaseTodosSectionHeader:      "Pending rebase todos",
