@@ -264,7 +264,18 @@ func (self *GitHubCommands) FetchRecentPRs(branches []string, serviceInfo *hosti
 func (self *GitHubCommands) fetchRecentPRsAux(endpoint string, repoOwner string, repoName string, branches []string, token string) ([]*models.GithubPullRequest, error) {
 	queryString, variables := fetchPullRequestsQuery(branches, repoOwner, repoName)
 
-	bodyBytes, err := json.Marshal(graphQLRequest{Query: queryString, Variables: variables})
+	respBytes, err := runGraphQLQuery(endpoint, token, queryString, variables)
+	if err != nil {
+		return nil, err
+	}
+
+	return parsePullRequestsResponse(respBytes)
+}
+
+// runGraphQLQuery POSTs a GraphQL query to endpoint, authenticated with token,
+// and returns the raw response body.
+func runGraphQLQuery(endpoint string, token string, query string, variables map[string]string) ([]byte, error) {
+	bodyBytes, err := json.Marshal(graphQLRequest{Query: query, Variables: variables})
 	if err != nil {
 		return nil, err
 	}
@@ -277,8 +288,8 @@ func (self *GitHubCommands) fetchRecentPRsAux(endpoint string, repoOwner string,
 	req.Header.Set("Content-Type", "application/json")
 
 	// Bound the request so that a dead or extremely slow network can't leave
-	// the pull-request refresh in flight for minutes. The data is auxiliary,
-	// so giving up and retrying on the next refresh beats waiting.
+	// the caller in flight for minutes. The data is auxiliary, so giving up
+	// beats waiting.
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -292,12 +303,7 @@ func (self *GitHubCommands) fetchRecentPRsAux(endpoint string, repoOwner string,
 		return nil, fmt.Errorf("GraphQL query failed with status: %s. Body: %s", resp.Status, bodyStr.String())
 	}
 
-	respBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return parsePullRequestsResponse(respBytes)
+	return io.ReadAll(resp.Body)
 }
 
 func parsePullRequestsResponse(respBytes []byte) ([]*models.GithubPullRequest, error) {
