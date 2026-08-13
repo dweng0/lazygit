@@ -295,6 +295,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | 複製分支名稱到剪貼簿 |  |
 | `` i `` | 顯示 git-flow 選項 |  |
 | `` <space> `` | 檢出 | 檢出選定的項目。 |
+| `` <enter> `` | 檢視提交 |  |
 | `` n `` | 新分支 |  |
 | `` N `` | Move commits to new branch | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | New worktree |  |
@@ -316,7 +317,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | 檢視遠端設定 | 檢視有關遠端分支的設定（例如重設至遠端） |
 | `` <ctrl+t> `` | 開啟外部差異工具 (git difftool) |  |
 | `` 0 `` | Focus main view |  |
-| `` <enter> `` | 檢視提交 |  |
 | `` / `` | 搜尋 |  |
 
 ## 標籤

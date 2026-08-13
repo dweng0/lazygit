@@ -53,6 +53,12 @@ func (self *BranchesController) GetKeybindings(opts types.KeybindingsOpts) []*ty
 			DisplayOnScreen: true,
 		},
 		{
+			Keys:              opts.GetKeys(opts.Config.Universal.GoInto),
+			Handler:           self.withItem(self.enter),
+			GetDisabledReason: self.require(self.singleItemSelected()),
+			Description:       self.c.Tr.ViewCommits,
+		},
+		{
 			Keys:              opts.GetKeys(opts.Config.Universal.New),
 			Handler:           self.withItem(self.newBranch),
 			GetDisabledReason: self.require(self.singleItemSelected()),
@@ -194,6 +200,24 @@ func (self *BranchesController) GetKeybindings(opts types.KeybindingsOpts) []*ty
 			Description:       self.c.Tr.OpenDiffTool,
 		},
 	}
+}
+
+func (self *BranchesController) GetOnDoubleClick() func() error {
+	return self.withItemGraceful(self.enter)
+}
+
+// enter shows the selected branch's commits in the sub-commits view.
+func (self *BranchesController) enter(branch *models.Branch) error {
+	return self.viewCommits(branch)
+}
+
+func (self *BranchesController) viewCommits(branch *models.Branch) error {
+	return self.c.Helpers().SubCommits.ViewSubCommits(helpers.ViewSubCommitsOpts{
+		Ref:             branch,
+		TitleRef:        branch.RefName(),
+		Context:         self.context(),
+		ShowBranchHeads: self.context().ShowBranchHeadsInSubCommits(),
+	})
 }
 
 func (self *BranchesController) GetOnRenderToMain() func() {

@@ -228,8 +228,9 @@ func (gui *Gui) resetHelpersAndControllers() {
 		controllers.AttachControllers(context, sideWindowControllerFactory.Create(context))
 	}
 
+	// The local branches panel handles GoInto in BranchesController itself; the
+	// other ref panels use the shared controller.
 	for _, context := range []controllers.CanSwitchToSubCommits{
-		gui.State.Contexts.Branches,
 		gui.State.Contexts.RemoteBranches,
 		gui.State.Contexts.Tags,
 		gui.State.Contexts.ReflogCommits,

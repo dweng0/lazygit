@@ -235,6 +235,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | 复制分支名称到剪贴板 |  |
 | `` i `` | 显示 git-flow 选项 |  |
 | `` <space> `` | 检出 | 检出选中的项目 |
+| `` <enter> `` | 查看提交 |  |
 | `` n `` | 新分支 |  |
 | `` N `` | 移动提交至新分支 | 创建一个新分支，并将当前分支未推送的提交移动到该分支。如果您打算开始新工作但忘记先创建新分支，这会很有用。<br><br>请注意，此操作忽略选择，新分支总是从主分支创建或堆叠在当前分支之上（您可以选择哪种方式）。 |
 | `` w `` | 新建工作树 |  |
@@ -256,7 +257,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | 查看上游选项 | 查看与分支上游相关的选项，例如设置/取消设置上游和重置为上游。 |
 | `` <ctrl+t> `` | 使用外部差异比较工具(git difftool) |  |
 | `` 0 `` | 聚焦主视图 |  |
-| `` <enter> `` | 查看提交 |  |
 | `` / `` | 通过文本过滤当前视图 |  |
 
 ## 构建补丁中

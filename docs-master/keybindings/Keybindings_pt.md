@@ -92,6 +92,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | Copiar nome da branch para área de transferência |  |
 | `` i `` | Exibir opções do git-flow |  |
 | `` <space> `` | Verificar | Checar item selecionado |
+| `` <enter> `` | Ver commits |  |
 | `` n `` | Nova branch |  |
 | `` N `` | Mover commits para uma nova branch | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | Nova árvore de trabalho |  |
@@ -113,7 +114,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | View upstream options | View options relating to the branch's upstream e.g. setting/unsetting the upstream and resetting to the upstream. |
 | `` <ctrl+t> `` | Abrir ferramenta de diff externa (git difftool) |  |
 | `` 0 `` | Focar visualização principal |  |
-| `` <enter> `` | Ver commits |  |
 | `` / `` | Filtrar a visualização atual por texto |  |
 
 ## Branches remotos
