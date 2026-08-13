@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"regexp"
@@ -332,6 +333,237 @@ func parsePullRequestsResponse(respBytes []byte) ([]*models.GithubPullRequest, e
 	}
 
 	return prs, nil
+}
+
+// FetchPullRequestDetails fetches the body, full discussion, and CI check state
+// of a single pull request. The repo owner, name and host are taken from the
+// PR's URL so no extra remote resolution is needed.
+func (self *GitHubCommands) FetchPullRequestDetails(pr *models.GithubPullRequest) (*models.GithubPullRequestDetails, error) {
+	host, owner, repo, err := parsePullRequestURL(pr.Url)
+	if err != nil {
+		return nil, err
+	}
+
+	token := self.GetAuthToken(host)
+	if token == "" {
+		return nil, fmt.Errorf("no GitHub auth token available for %s", host)
+	}
+
+	query, variables := pullRequestDetailsQuery(owner, repo, pr.Number)
+
+	respBytes, err := runGraphQLQuery(graphQLEndpoint(host), token, query, variables)
+	if err != nil {
+		return nil, err
+	}
+
+	return parsePullRequestDetailsResponse(respBytes)
+}
+
+// parsePullRequestURL pulls the host, owner and repo out of a pull request URL
+// of the form https://<host>/<owner>/<repo>/pull/<number>.
+func parsePullRequestURL(prURL string) (host string, owner string, repo string, err error) {
+	u, err := url.Parse(prURL)
+	if err != nil {
+		return "", "", "", err
+	}
+
+	parts := strings.Split(strings.Trim(u.Path, "/"), "/")
+	if len(parts) < 4 || parts[2] != "pull" {
+		return "", "", "", fmt.Errorf("unexpected pull request URL: %s", prURL)
+	}
+
+	return u.Host, parts[0], parts[1], nil
+}
+
+func pullRequestDetailsQuery(owner string, repo string, number int) (string, map[string]string) {
+	// The number is an int rather than a string variable, so it's interpolated
+	// into the query directly; owner and repo stay as variables.
+	query := fmt.Sprintf(`query($owner: String!, $repo: String!) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: %d) {
+      number
+      title
+      state
+      isDraft
+      url
+      createdAt
+      author { login }
+      body
+      comments(first: 100) {
+        nodes { author { login } createdAt body }
+      }
+      reviews(first: 50) {
+        nodes {
+          author { login }
+          state
+          createdAt
+          body
+          comments(first: 50) {
+            nodes { author { login } path body }
+          }
+        }
+      }
+      commits(last: 1) {
+        nodes {
+          commit {
+            statusCheckRollup {
+              contexts(first: 100) {
+                nodes {
+                  __typename
+                  ... on CheckRun { name status conclusion }
+                  ... on StatusContext { context state }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`, number)
+
+	return query, map[string]string{"owner": owner, "repo": repo}
+}
+
+type pullRequestDetailsResponse struct {
+	Data struct {
+		Repository struct {
+			PullRequest struct {
+				Number    int    `json:"number"`
+				Title     string `json:"title"`
+				State     string `json:"state"`
+				IsDraft   bool   `json:"isDraft"`
+				Url       string `json:"url"`
+				CreatedAt string `json:"createdAt"`
+				Author    struct {
+					Login string `json:"login"`
+				} `json:"author"`
+				Body     string `json:"body"`
+				Comments struct {
+					Nodes []struct {
+						Author    struct{ Login string } `json:"author"`
+						CreatedAt string                 `json:"createdAt"`
+						Body      string                 `json:"body"`
+					} `json:"nodes"`
+				} `json:"comments"`
+				Reviews struct {
+					Nodes []struct {
+						Author    struct{ Login string } `json:"author"`
+						State     string                 `json:"state"`
+						CreatedAt string                 `json:"createdAt"`
+						Body      string                 `json:"body"`
+						Comments  struct {
+							Nodes []struct {
+								Author struct{ Login string } `json:"author"`
+								Path   string                 `json:"path"`
+								Body   string                 `json:"body"`
+							} `json:"nodes"`
+						} `json:"comments"`
+					} `json:"nodes"`
+				} `json:"reviews"`
+				Commits struct {
+					Nodes []struct {
+						Commit struct {
+							StatusCheckRollup struct {
+								Contexts struct {
+									Nodes []prCheckContextNode `json:"nodes"`
+								} `json:"contexts"`
+							} `json:"statusCheckRollup"`
+						} `json:"commit"`
+					} `json:"nodes"`
+				} `json:"commits"`
+			} `json:"pullRequest"`
+		} `json:"repository"`
+	} `json:"data"`
+}
+
+type prCheckContextNode struct {
+	Typename   string `json:"__typename"`
+	Name       string `json:"name"`
+	Status     string `json:"status"`
+	Conclusion string `json:"conclusion"`
+	Context    string `json:"context"`
+	State      string `json:"state"`
+}
+
+func parsePullRequestDetailsResponse(respBytes []byte) (*models.GithubPullRequestDetails, error) {
+	var result pullRequestDetailsResponse
+	if err := json.Unmarshal(respBytes, &result); err != nil {
+		return nil, err
+	}
+
+	pr := result.Data.Repository.PullRequest
+
+	details := &models.GithubPullRequestDetails{
+		Number:    pr.Number,
+		Title:     pr.Title,
+		State:     lo.Ternary(pr.IsDraft && pr.State != "CLOSED", "DRAFT", pr.State),
+		Author:    pr.Author.Login,
+		CreatedAt: pr.CreatedAt,
+		Url:       pr.Url,
+		Body:      pr.Body,
+	}
+
+	for _, node := range pr.Comments.Nodes {
+		details.Comments = append(details.Comments, models.GithubComment{
+			Author:    node.Author.Login,
+			CreatedAt: node.CreatedAt,
+			Body:      node.Body,
+		})
+	}
+
+	for _, node := range pr.Reviews.Nodes {
+		review := models.GithubReview{
+			Author:    node.Author.Login,
+			State:     node.State,
+			CreatedAt: node.CreatedAt,
+			Body:      node.Body,
+		}
+		for _, comment := range node.Comments.Nodes {
+			review.Comments = append(review.Comments, models.GithubReviewComment{
+				Author: comment.Author.Login,
+				Path:   comment.Path,
+				Body:   comment.Body,
+			})
+		}
+		details.Reviews = append(details.Reviews, review)
+	}
+
+	if len(pr.Commits.Nodes) > 0 {
+		for _, node := range pr.Commits.Nodes[0].Commit.StatusCheckRollup.Contexts.Nodes {
+			details.Checks = append(details.Checks, checkFromContextNode(node))
+		}
+	}
+
+	return details, nil
+}
+
+// checkFromContextNode normalises a statusCheckRollup context (either a
+// GitHub Actions CheckRun or a third-party StatusContext) into a GithubCheck
+// with a name and a coarse state.
+func checkFromContextNode(node prCheckContextNode) models.GithubCheck {
+	if node.Typename == "CheckRun" {
+		state := "PENDING"
+		if node.Status == "COMPLETED" {
+			state = normalizeCheckConclusion(node.Conclusion)
+		}
+		return models.GithubCheck{Name: node.Name, State: state}
+	}
+
+	return models.GithubCheck{Name: node.Context, State: normalizeCheckConclusion(node.State)}
+}
+
+// normalizeCheckConclusion collapses the various GitHub conclusion/state values
+// into SUCCESS, FAILURE, or PENDING.
+func normalizeCheckConclusion(value string) string {
+	switch value {
+	case "SUCCESS", "NEUTRAL", "SKIPPED":
+		return "SUCCESS"
+	case "FAILURE", "ERROR", "TIMED_OUT", "CANCELLED", "ACTION_REQUIRED", "STARTUP_FAILURE":
+		return "FAILURE"
+	default:
+		return "PENDING"
+	}
 }
 
 // returns a map from branch name to pull request
