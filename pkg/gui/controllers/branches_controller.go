@@ -53,6 +53,12 @@ func (self *BranchesController) GetKeybindings(opts types.KeybindingsOpts) []*ty
 			DisplayOnScreen: true,
 		},
 		{
+			Keys:              opts.GetKeys(opts.Config.Universal.GoInto),
+			Handler:           self.withItem(self.enter),
+			GetDisabledReason: self.require(self.singleItemSelected()),
+			Description:       self.c.Tr.ViewCommits,
+		},
+		{
 			Keys:              opts.GetKeys(opts.Config.Universal.New),
 			Handler:           self.withItem(self.newBranch),
 			GetDisabledReason: self.require(self.singleItemSelected()),
@@ -194,6 +200,67 @@ func (self *BranchesController) GetKeybindings(opts types.KeybindingsOpts) []*ty
 			Description:       self.c.Tr.OpenDiffTool,
 		},
 	}
+}
+
+func (self *BranchesController) GetOnDoubleClick() func() error {
+	return self.withItemGraceful(self.enter)
+}
+
+// enter shows the selected branch's pull request in the focused main view when
+// it has one, and otherwise falls back to showing its commits in the
+// sub-commits view.
+func (self *BranchesController) enter(branch *models.Branch) error {
+	pr, ok := self.c.Model().PullRequestsMap[branch.Name]
+	if ok && presentation.ShouldShowPrForBranch(pr, branch.Name, self.c.UserConfig()) {
+		return self.viewPullRequest(pr)
+	}
+
+	return self.viewCommits(branch)
+}
+
+// viewPullRequest fetches the pull request's details in the background and
+// renders them into the focused main view, so the body and comments can be
+// scrolled. A loading message is shown while the request is in flight.
+func (self *BranchesController) viewPullRequest(pr *models.GithubPullRequest) error {
+	self.renderToPullRequestView(self.c.Tr.PullRequestLoading)
+	self.c.Context().Push(self.c.Contexts().Normal, types.OnFocusOpts{})
+
+	self.c.OnWorkerBackground(func(gocui.Task) error {
+		details, err := self.c.Git().GitHub.FetchPullRequestDetails(pr)
+
+		self.c.OnUIThread(func() error {
+			if err != nil {
+				self.c.Log.Error(err)
+				self.renderToPullRequestView(fmt.Sprintf("%s:\n\n%s", self.c.Tr.PullRequestLoadError, err.Error()))
+			} else {
+				self.renderToPullRequestView(presentation.FormatPullRequestDetails(details, self.c.Tr))
+			}
+			return nil
+		})
+
+		return nil
+	})
+
+	return nil
+}
+
+func (self *BranchesController) renderToPullRequestView(content string) {
+	self.c.RenderToMainViews(types.RefreshMainOpts{
+		Pair: self.c.MainViewPairs().Normal,
+		Main: &types.ViewUpdateOpts{
+			Title: self.c.Tr.PullRequestTitle,
+			Task:  types.NewRenderStringWithoutScrollTask(content),
+		},
+	})
+}
+
+func (self *BranchesController) viewCommits(branch *models.Branch) error {
+	return self.c.Helpers().SubCommits.ViewSubCommits(helpers.ViewSubCommitsOpts{
+		Ref:             branch,
+		TitleRef:        branch.RefName(),
+		Context:         self.context(),
+		ShowBranchHeads: self.context().ShowBranchHeadsInSubCommits(),
+	})
 }
 
 func (self *BranchesController) GetOnRenderToMain() func() {

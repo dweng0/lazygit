@@ -100,6 +100,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | Kopieer branch name naar klembord |  |
 | `` i `` | Laat git-flow opties zien |  |
 | `` <space> `` | Uitchecken | Geselecteerd item uitchecken. |
+| `` <enter> `` | Bekijk commits |  |
 | `` n `` | Nieuwe branch |  |
 | `` N `` | Verplaats commits naar nieuwe branch | Maak een nieuwe branch en verplaats niet-gepushte commits van de huidige branch hier naar toe. Gebruik dit in het geval dat je deze commits eigenlijk op een nieuwe branch had willen maken.<br><br>Let op dat de selectie genegeerd wordt. De nieuwe branch komt ofwel bovenop de main branch, of bovenop de huidige branch (je kan kiezen). |
 | `` w `` | New worktree |  |
@@ -121,7 +122,16 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | View upstream options | View options relating to the branch's upstream e.g. setting/unsetting the upstream and resetting to the upstream. |
 | `` <ctrl+t> `` | Open externe diff applicatie (git difftool) |  |
 | `` 0 `` | Focus main view |  |
-| `` <enter> `` | Bekijk commits |  |
+| `` / `` | Filter the current view by text |  |
+
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` o `` | Open bestand |  |
+| `` I `` | Toggle hidden files |  |
 | `` / `` | Filter the current view by text |  |
 
 ## Commit bericht

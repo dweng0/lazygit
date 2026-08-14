@@ -372,6 +372,17 @@ type TranslationSet struct {
 	PullRequestChecksFailing              string
 	PullRequestChecksError                string
 	PullRequestChecksExpected             string
+	PullRequestTitle                      string
+	PullRequestLoading                    string
+	PullRequestLoadError                  string
+	PullRequestChecksHeader               string
+	PullRequestCommentsHeader             string
+	PullRequestReviewsHeader              string
+	PullRequestNoDescription              string
+	PullRequestReviewApproved             string
+	PullRequestReviewChangesRequested     string
+	PullRequestReviewCommented            string
+	PullRequestReviewDismissed            string
 	ErrorOccurred                         string
 	ConflictLabel                         string
 	PendingRebaseTodosSectionHeader       string
@@ -759,6 +770,10 @@ type TranslationSet struct {
 	SubCommitsTitle                       string
 	ExitSubview                           string
 	SubmodulesTitle                       string
+	BrowserTitle                          string
+	BrowserGoUp                           string
+	BrowserToggleHidden                   string
+	BrowserBinaryFile                     string
 	NavigationTitle                       string
 	SuggestionsCheatsheetTitle            string
 	// Unlike the cheatsheet title above, the real suggestions title has a little message saying press tab to focus
@@ -1535,6 +1550,17 @@ func EnglishTranslationSet() *TranslationSet {
 		PullRequestChecksFailing:             "Failing",
 		PullRequestChecksError:               "Error",
 		PullRequestChecksExpected:            "Expected",
+		PullRequestTitle:                     "Pull request",
+		PullRequestLoading:                   "Loading pull request...",
+		PullRequestLoadError:                 "Failed to load pull request",
+		PullRequestChecksHeader:              "Checks",
+		PullRequestCommentsHeader:            "Comments",
+		PullRequestReviewsHeader:             "Reviews",
+		PullRequestNoDescription:             "No description provided",
+		PullRequestReviewApproved:            "approved",
+		PullRequestReviewChangesRequested:    "requested changes",
+		PullRequestReviewCommented:           "commented",
+		PullRequestReviewDismissed:           "dismissed",
 		ErrorOccurred:                        "An error occurred! Please create an issue at",
 		ConflictLabel:                        "CONFLICT",
 		PendingRebaseTodosSectionHeader:      "Pending rebase todos",
@@ -1921,6 +1947,10 @@ func EnglishTranslationSet() *TranslationSet {
 		SubCommitsTitle:                          "Sub-commits",
 		ExitSubview:                              "Exit subview",
 		SubmodulesTitle:                          "Submodules",
+		BrowserTitle:                             "Browser",
+		BrowserGoUp:                              "Go to parent directory",
+		BrowserToggleHidden:                      "Toggle hidden files",
+		BrowserBinaryFile:                        "(binary file)",
 		NavigationTitle:                          "List panel navigation",
 		SuggestionsCheatsheetTitle:               "Suggestions",
 		SuggestionsTitle:                         "Suggestions (press %s to focus)",

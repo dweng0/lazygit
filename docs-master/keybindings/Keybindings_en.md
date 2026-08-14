@@ -52,6 +52,16 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | Next tab |  |
 | `` [ `` | Previous tab |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` o `` | Open file |  |
+| `` I `` | Toggle hidden files |  |
+| `` / `` | Filter the current view by text |  |
+
 ## Commit files
 
 | Key | Action | Info |
@@ -176,6 +186,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | Copy branch name to clipboard |  |
 | `` i `` | Show git-flow options |  |
 | `` <space> `` | Checkout | Checkout selected item. |
+| `` <enter> `` | View commits |  |
 | `` n `` | New branch |  |
 | `` N `` | Move commits to new branch | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | New worktree |  |
@@ -197,7 +208,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | View upstream options | View options relating to the branch's upstream e.g. setting/unsetting the upstream and resetting to the upstream. |
 | `` <ctrl+t> `` | Open external diff tool (git difftool) |  |
 | `` 0 `` | Focus main view |  |
-| `` <enter> `` | View commits |  |
 | `` / `` | Filter the current view by text |  |
 
 ## Main panel (merging)

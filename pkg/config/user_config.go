@@ -456,6 +456,7 @@ type KeybindingConfig struct {
 	CommitFiles    KeybindingCommitFilesConfig    `yaml:"commitFiles"`
 	Main           KeybindingMainConfig           `yaml:"main"`
 	Submodules     KeybindingSubmodulesConfig     `yaml:"submodules"`
+	Browser        KeybindingBrowserConfig        `yaml:"browser"`
 	CommitMessage  KeybindingCommitMessageConfig  `yaml:"commitMessage"`
 }
 
@@ -671,6 +672,12 @@ type KeybindingSubmodulesConfig struct {
 	BulkMenu Keybinding `yaml:"bulkMenu"`
 }
 
+type KeybindingBrowserConfig struct {
+	GoUp         Keybinding `yaml:"goUp"`
+	GoInto       Keybinding `yaml:"goInto"`
+	ToggleHidden Keybinding `yaml:"toggleHidden"`
+}
+
 type KeybindingCommitMessageConfig struct {
 	CommitMenu Keybinding `yaml:"commitMenu"`
 }
@@ -869,7 +876,7 @@ func GetDefaultConfigForPlatform(platform string) *UserConfig {
 			ShrinkSidePanelsToContent: false,
 			SidePanels: []SidePanel{
 				{"status"},
-				{"files", "worktrees", "submodules"},
+				{"files", "worktrees", "submodules", "browser"},
 				{"branches", "remotes", "tags"},
 				{"commits", "reflog"},
 				{"stash"},
@@ -1178,6 +1185,11 @@ func GetDefaultConfigForPlatform(platform string) *UserConfig {
 				Init:     Keybinding{"i"},
 				Update:   Keybinding{"u"},
 				BulkMenu: Keybinding{"b"},
+			},
+			Browser: KeybindingBrowserConfig{
+				GoUp:         Keybinding{"h"},
+				GoInto:       Keybinding{"l"},
+				ToggleHidden: Keybinding{"I"},
 			},
 			CommitMessage: KeybindingCommitMessageConfig{
 				CommitMenu: Keybinding{"<ctrl+o>"},

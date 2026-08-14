@@ -52,6 +52,16 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | 이전 탭 |  |
 | `` [ `` | 다음 탭 |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Enter |  |
+| `` h `` | Go to parent directory |  |
+| `` o `` | 파일 닫기 |  |
+| `` I `` | Toggle hidden files |  |
+| `` / `` | Filter the current view by text |  |
+
 ## Input prompt
 
 | Key | Action | Info |
@@ -210,6 +220,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | 브랜치명을 클립보드에 복사 |  |
 | `` i `` | Git-flow 옵션 보기 |  |
 | `` <space> `` | 체크아웃 | Checkout selected item. |
+| `` <enter> `` | 커밋 보기 |  |
 | `` n `` | 새 브랜치 생성 |  |
 | `` N `` | Move commits to new branch | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | New worktree |  |
@@ -231,7 +242,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | View upstream options | View options relating to the branch's upstream e.g. setting/unsetting the upstream and resetting to the upstream. |
 | `` <ctrl+t> `` | Open external diff tool (git difftool) |  |
 | `` 0 `` | Focus main view |  |
-| `` <enter> `` | 커밋 보기 |  |
 | `` / `` | Filter the current view by text |  |
 
 ## 상태

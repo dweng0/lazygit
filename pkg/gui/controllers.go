@@ -143,6 +143,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 	)
 
 	submodulesController := controllers.NewSubmodulesController(common)
+	browserController := controllers.NewBrowserController(common)
 
 	bisectController := controllers.NewBisectController(common)
 
@@ -217,6 +218,7 @@ func (gui *Gui) resetHelpersAndControllers() {
 		gui.State.Contexts.RemoteBranches,
 		gui.State.Contexts.Files,
 		gui.State.Contexts.Submodules,
+		gui.State.Contexts.Browser,
 		gui.State.Contexts.ReflogCommits,
 		gui.State.Contexts.LocalCommits,
 		gui.State.Contexts.CommitFiles,
@@ -226,8 +228,9 @@ func (gui *Gui) resetHelpersAndControllers() {
 		controllers.AttachControllers(context, sideWindowControllerFactory.Create(context))
 	}
 
+	// The local branches panel handles GoInto in BranchesController itself; the
+	// other ref panels use the shared controller.
 	for _, context := range []controllers.CanSwitchToSubCommits{
-		gui.State.Contexts.Branches,
 		gui.State.Contexts.RemoteBranches,
 		gui.State.Contexts.Tags,
 		gui.State.Contexts.ReflogCommits,
@@ -329,6 +332,10 @@ func (gui *Gui) resetHelpersAndControllers() {
 
 	controllers.AttachControllers(gui.State.Contexts.Submodules,
 		submodulesController,
+	)
+
+	controllers.AttachControllers(gui.State.Contexts.Browser,
+		browserController,
 	)
 
 	controllers.AttachControllers(gui.State.Contexts.Branches,

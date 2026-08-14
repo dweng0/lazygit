@@ -52,6 +52,16 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | 次のタブ |  |
 | `` [ `` | 前のタブ |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | 入る |  |
+| `` h `` | Go to parent directory |  |
+| `` o `` | ファイルを開く |  |
+| `` I `` | Toggle hidden files |  |
+| `` / `` | 現在のビューをテキストでフィルタリング |  |
+
 ## Input prompt
 
 | Key | Action | Info |
@@ -374,6 +384,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | ブランチ名をクリップボードにコピー |  |
 | `` i `` | git-flowオプションを表示 |  |
 | `` <space> `` | チェックアウト（ブランチの切り替え） | 選択した項目をチェックアウトします。 |
+| `` <enter> `` | コミットを表示 |  |
 | `` n `` | 新しいブランチ |  |
 | `` N `` | コミットを新しいブランチに移動 | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | 新しいワークツリー |  |
@@ -395,7 +406,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | アップストリームオプションを表示 | ブランチのアップストリームに関連するオプションを表示します（例：アップストリームの設定/解除やアップストリームへのリセット）。 |
 | `` <ctrl+t> `` | 外部差分ツールを開く（git difftool） |  |
 | `` 0 `` | メインビューにフォーカス |  |
-| `` <enter> `` | コミットを表示 |  |
 | `` / `` | 現在のビューをテキストでフィルタリング |  |
 
 ## ワークツリー

@@ -52,6 +52,16 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` ] `` | Następna zakładka |  |
 | `` [ `` | Poprzednia zakładka |  |
 
+## Browser
+
+| Key | Action | Info |
+|-----|--------|-------------|
+| `` <enter> `` | Wejdź |  |
+| `` h `` | Go to parent directory |  |
+| `` o `` | Otwórz plik |  |
+| `` I `` | Toggle hidden files |  |
+| `` / `` | Filtruj bieżący widok po tekście |  |
+
 ## Commity
 
 | Key | Action | Info |
@@ -162,6 +172,7 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` <ctrl+o> `` | Kopiuj nazwę gałęzi do schowka |  |
 | `` i `` | Pokaż opcje git-flow |  |
 | `` <space> `` | Przełącz | Przełącz wybrany element. |
+| `` <enter> `` | Pokaż commity |  |
 | `` n `` | Nowa gałąź |  |
 | `` N `` | Przenieś commity do nowej gałęzi | Create a new branch and move the unpushed commits of the current branch to it. Useful if you meant to start new work and forgot to create a new branch first.<br><br>Note that this disregards the selection, the new branch is always created either from the main branch or stacked on top of the current branch (you get to choose which). |
 | `` w `` | Nowe drzewo pracy |  |
@@ -183,7 +194,6 @@ _This file is auto-generated. To update, make the changes in the pkg/i18n direct
 | `` u `` | Pokaż opcje upstream | Pokaż opcje dotyczące upstream gałęzi, np. ustawianie/usuwanie upstream i resetowanie do upstream. |
 | `` <ctrl+t> `` | Otwórz zewnętrzne narzędzie różnic (git difftool) |  |
 | `` 0 `` | Focus main view |  |
-| `` <enter> `` | Pokaż commity |  |
 | `` / `` | Filtruj bieżący widok po tekście |  |
 
 ## Menu

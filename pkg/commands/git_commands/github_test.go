@@ -480,3 +480,88 @@ func TestGenerateGithubPullRequestMap(t *testing.T) {
 		})
 	}
 }
+
+func TestParsePullRequestURL(t *testing.T) {
+	cases := []struct {
+		name          string
+		url           string
+		expectedHost  string
+		expectedOwner string
+		expectedRepo  string
+		expectError   bool
+	}{
+		{
+			name:          "github.com",
+			url:           "https://github.com/jesseduffield/lazygit/pull/123",
+			expectedHost:  "github.com",
+			expectedOwner: "jesseduffield",
+			expectedRepo:  "lazygit",
+		},
+		{
+			name:          "enterprise host",
+			url:           "https://github.example.com/my-org/my-repo/pull/7",
+			expectedHost:  "github.example.com",
+			expectedOwner: "my-org",
+			expectedRepo:  "my-repo",
+		},
+		{
+			name:        "not a pull request URL",
+			url:         "https://github.com/jesseduffield/lazygit/issues/123",
+			expectError: true,
+		},
+		{
+			name:        "too few path segments",
+			url:         "https://github.com/jesseduffield",
+			expectError: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			host, owner, repo, err := parsePullRequestURL(c.url)
+			if c.expectError {
+				assert.Error(t, err)
+				return
+			}
+			assert.NoError(t, err)
+			assert.Equal(t, c.expectedHost, host)
+			assert.Equal(t, c.expectedOwner, owner)
+			assert.Equal(t, c.expectedRepo, repo)
+		})
+	}
+}
+
+func TestCheckFromContextNode(t *testing.T) {
+	cases := []struct {
+		name     string
+		node     prCheckContextNode
+		expected models.GithubCheck
+	}{
+		{
+			name:     "passed GitHub Actions check",
+			node:     prCheckContextNode{Typename: "CheckRun", Name: "build", Status: "COMPLETED", Conclusion: "SUCCESS"},
+			expected: models.GithubCheck{Name: "build", State: "SUCCESS"},
+		},
+		{
+			name:     "running GitHub Actions check",
+			node:     prCheckContextNode{Typename: "CheckRun", Name: "test", Status: "IN_PROGRESS"},
+			expected: models.GithubCheck{Name: "test", State: "PENDING"},
+		},
+		{
+			name:     "failed GitHub Actions check",
+			node:     prCheckContextNode{Typename: "CheckRun", Name: "lint", Status: "COMPLETED", Conclusion: "FAILURE"},
+			expected: models.GithubCheck{Name: "lint", State: "FAILURE"},
+		},
+		{
+			name:     "third-party status context",
+			node:     prCheckContextNode{Typename: "StatusContext", Context: "ci/circleci", State: "SUCCESS"},
+			expected: models.GithubCheck{Name: "ci/circleci", State: "SUCCESS"},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			assert.Equal(t, c.expected, checkFromContextNode(c.node))
+		})
+	}
+}

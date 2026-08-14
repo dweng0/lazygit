@@ -6,6 +6,7 @@ import (
 	"github.com/jesseduffield/lazygit/pkg/integration/components"
 	"github.com/jesseduffield/lazygit/pkg/integration/tests/bisect"
 	"github.com/jesseduffield/lazygit/pkg/integration/tests/branch"
+	"github.com/jesseduffield/lazygit/pkg/integration/tests/browser"
 	"github.com/jesseduffield/lazygit/pkg/integration/tests/cherry_pick"
 	"github.com/jesseduffield/lazygit/pkg/integration/tests/commit"
 	"github.com/jesseduffield/lazygit/pkg/integration/tests/config"
@@ -90,6 +91,8 @@ var tests = []*components.IntegrationTest{
 	branch.SquashMerge,
 	branch.Suggestions,
 	branch.UnsetUpstream,
+	browser.Navigate,
+	browser.ToggleHidden,
 	cherry_pick.CherryPick,
 	cherry_pick.CherryPickCommitThatBecomesEmpty,
 	cherry_pick.CherryPickConflicts,
